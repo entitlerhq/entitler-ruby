@@ -1,0 +1,21 @@
+name: Publish
+
+on: workflow_dispatch
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby
+      - uses: rubygems/configure-rubygems-credentials@v2.1.0
+      - run: gem build entitler.gemspec
+      - run: gem push entitler-*.gem
